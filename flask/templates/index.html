@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name ="website" content="frontend">
+        <meta http-equiv="X-UA-Compatible" content="frontend">
+        <title>Weather Website</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='main.css') }}">
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <div class="app-wrap">
+            <nav>
+                <label class="logo">SEPA6</label>
+                <ul>
+                    <li><a href="index.html">Status</a></li>
+                    <li><a href="prediction.html">Fog And HAze</a></li>
+                </ul>
+            </nav>
+            
+           <header>
+               <h1>WEATHER STATUS</h1>
+           </header>
+           <main>
+
+               <section class="location">
+                   <div class="city">Melbourne, AU</div>
+                   <div class="date">Saturnday 29 August 2021</div>
+                   <div class="clock">
+                    <span class="clocktime"></span>
+                    <span class="clockamorpm"></span>
+                  </div>
+                  <script>
+                      class Clock {
+                            constructor(element) {
+                              this.element = element;
+                            }
+
+                            start() {
+                              this.update();
+
+                              setInterval(() => {
+                                this.update();
+                              }, 500);
+                            }
+			      //update time per second//
+                            update() {
+                              const parts = this.getTime();
+                              const formatMin = parts.minute.toString().padStart(2, "0");
+                              const timeFormatted = `${parts.hour}:${formatMin}`;
+                              const amPm = parts.Am ? "AM" : "PM";
+
+                              this.element.querySelector(".clocktime").textContent = timeFormatted;
+                              this.element.querySelector(".clockamorpm").textContent = amPm;
+                            }
+
+			                                  //get real time//
+
+                            getTime() {
+                              const now = new Date();
+							  var utc_offset = now.getTimezoneOffset();
+                              now.setMinutes(now.getMinutes()+ utc_offset);
+
+				                                //get Melboure time//
+
+                              var melbourne = 11*60;
+                              now.setMinutes(now.getMinutes() +melbourne);
+                              return {
+                                hour: now.getHours() % 12 || 12,
+                                minute: now.getMinutes(),
+                                Am: now.getHours() < 12
+                              };
+                            }
+                          }
+                          const clockElement = document.querySelector(".clock");
+                          const clockObject = new Clock(clockElement);
+                          clockObject.start();
+
+                  </script>
+               </section>
+               <div class= "current">
+                   <div class="temp">10<span>°C</span></div>
+                   <div class="weather">Status: Cloudy</div>
+                   <div class="humidity">Humidity: 50%</div>
+               </div>
+           </main>
+        </div>
+        <script src="main.js"></script>
+    </body>
+</html>
